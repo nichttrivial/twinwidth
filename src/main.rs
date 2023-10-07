@@ -1,3 +1,4 @@
+use twinwidth::graph::Graph;
 fn main() {
-    println!("Hello, world!");
+    let _graph = Graph::new();
 }
