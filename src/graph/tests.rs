@@ -61,3 +61,32 @@ fn test_add_edge_panic_second_node() {
     graph.add_node(1);
     graph.add_edge(1, 2);
 }
+
+#[test]
+fn test_get_neighbours() {
+    let mut _graph = Graph::new();
+
+    _graph.add_node(1);
+    _graph.add_node(2);
+    _graph.add_edge(1, 2);
+    _graph.add_edge(1, 2);
+
+    let neighbours_1 = _graph.get_neighbours(1);
+    let neighbours_2 = _graph.get_neighbours(2);
+
+    assert_eq!(neighbours_1, &HashSet::from([2]));
+    assert_eq!(neighbours_2, &HashSet::from([1]));
+}
+
+#[test]
+#[should_panic]
+fn test_get_neighbours_panic() {
+    let mut _graph = Graph::new();
+
+    _graph.add_node(1);
+    _graph.add_node(2);
+    _graph.add_edge(1, 2);
+    _graph.add_edge(1, 2);
+
+    _graph.get_neighbours(3);
+}

@@ -1,6 +1,6 @@
 pub mod graph {
     //! This modules contains stuff for basic graph tasks
-    use std::collections::{HashSet, HashMap};
+    use std::collections::{HashMap, HashSet};
 
     ///A Graph implementation using adjacency HashSet
     ///
@@ -15,7 +15,7 @@ pub mod graph {
         ///
         /// # Returns
         /// * New Graph with empty HashMap
-        /// 
+        ///
         /// # Examples
         /// ```
         /// use twinwidth::graph::Graph;
@@ -28,7 +28,7 @@ pub mod graph {
         }
 
         /// Adds a new node without any edges to the graph
-        /// 
+        ///
         /// # Examples
         /// ```
         /// use twinwidth::graph::Graph;
@@ -40,10 +40,10 @@ pub mod graph {
         }
 
         /// Adds a new edge between two nodes
-        /// 
+        ///
         /// # Panics
         /// If one egde does not exist
-        /// 
+        ///
         /// # Returns
         /// * returns true if the edge was newly created
         /// * returns false if the edge already existed
@@ -57,17 +57,41 @@ pub mod graph {
         /// graph.add_edge(1, 2);
         /// ```
         pub fn add_edge(&mut self, node_a: u32, node_b: u32) -> bool {
-            let success_a =  match self.adj_set.get_mut(&node_a) {
+            let success_a = match self.adj_set.get_mut(&node_a) {
                 Some(set) => set.insert(node_b),
                 None => panic!("Node does not exist"),
             };
 
-            let success_b =  match self.adj_set.get_mut(&node_b) {
+            let success_b = match self.adj_set.get_mut(&node_b) {
                 Some(set) => set.insert(node_a),
                 None => panic!("Node does not exist"),
             };
 
             success_a | success_b
+        }
+
+        /// Gets a reference to the HashSet of adjacent nodes
+        ///
+        /// # Panics
+        /// * If the edge does not exist
+        ///
+        /// # Returns
+        /// * Reference to the HashSet of adjacent nodes
+        ///
+        /// # Examples
+        /// ```
+        /// use twinwidth::graph::Graph;
+        /// let mut graph: Graph = Graph::new();
+        /// graph.add_node(1);
+        /// graph.add_node(2);
+        /// graph.add_edge(1, 2);
+        /// graph.get_neighbours(1);
+        /// ```
+        pub fn get_neighbours(&self, node: u32) -> &HashSet<u32> {
+            match self.adj_set.get(&node) {
+                Some(set) => set,
+                None => panic!("Node does not exist"),
+            }
         }
     }
 
