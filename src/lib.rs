@@ -42,7 +42,7 @@ pub mod graph {
         /// Adds a new edge between two nodes
         ///
         /// # Panics
-        /// If one egde does not exist
+        /// If one node does not exist
         ///
         /// # Returns
         /// * returns true if the edge was newly created
@@ -73,7 +73,7 @@ pub mod graph {
         /// Gets a reference to the HashSet of adjacent nodes
         ///
         /// # Panics
-        /// * If the edge does not exist
+        /// * If the node does not exist
         ///
         /// # Returns
         /// * Reference to the HashSet of adjacent nodes
@@ -92,6 +92,48 @@ pub mod graph {
                 Some(set) => set,
                 None => panic!("Node does not exist"),
             }
+        }
+
+        /// Contracts two nodes
+        /// The emerging node will be saved under node_a.
+        /// node_b will be deleted.
+        ///
+        /// # Panics
+        /// If one node does not exist
+        ///
+        /// # Examples
+        /// ```
+        /// use twinwidth::graph::Graph;
+        /// let mut graph: Graph = Graph::new();
+        ///
+        /// graph.add_node(1);
+        /// graph.add_node(2);
+        /// graph.add_node(3);
+        /// graph.add_node(4);
+        ///
+        /// graph.add_edge(1, 2);
+        /// graph.add_edge(2, 3);
+        /// graph.add_edge(3, 4);
+        ///
+        /// graph.contract_nodes(2, 3);
+        /// ```
+        pub fn contract_nodes(&mut self, node_a: u32, node_b: u32) {
+            let mut set_a = match self.adj_set.get(&node_a).cloned() {
+                Some(set) => set,
+                None => panic!("Node does not exist"),
+            };
+            set_a.remove(&node_b);
+
+            let mut set_b = match self.adj_set.get(&node_b).cloned() {
+                Some(set) => set,
+                None => panic!("Node does not exist"),
+            };
+            set_b.remove(&node_a);
+
+            let union: HashSet<u32> = set_a.union(&set_b).copied().collect();
+            self.adj_set.insert(node_a, union);
+
+            self.adj_set.remove(&node_b);
         }
     }
 
