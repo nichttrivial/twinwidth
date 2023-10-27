@@ -20,10 +20,37 @@ impl Graph {
     /// use twinwidth::graph::Graph;
     /// let graph: Graph = Graph::new();
     /// ```
-    pub fn new() -> Graph {
+    pub fn new() -> Self {
         Graph {
             adj_set: HashMap::new(),
         }
+    }
+
+    /// Creates an `Graph` from a Vector of edges.
+    ///
+    /// # Returns
+    /// * New Graph with edges
+    ///
+    /// # Examples
+    /// ```
+    /// use twinwidth::graph::Graph;
+    /// let edges = vec![(1,2),(2,3),(3,4)];
+    /// let graph: Graph = Graph::from_edges(edges);
+    /// ```
+    pub fn from_edges(edges: Vec<(u32, u32)>) -> Self {
+        let mut g = Self::new();
+        for (node_a, node_b) in edges {
+            if !g.adj_set.contains_key(&node_a) {
+                g.add_node(node_a);
+            }
+
+            if !g.adj_set.contains_key(&node_b) {
+                g.add_node(node_b);
+            }
+
+            g.add_edge(node_a, node_b);
+        }
+        g
     }
 
     /// Adds a new node without any edges to the graph
@@ -117,6 +144,7 @@ impl Graph {
     /// graph.contract_nodes(2, 3);
     /// ```
     pub fn contract_nodes(&mut self, node_a: u32, node_b: u32) {
+        //TODO: This implementation seems not very idomatic. Refactor!
         let mut set_a = match self.adj_set.get(&node_a).cloned() {
             Some(set) => set,
             None => panic!("Node does not exist"),

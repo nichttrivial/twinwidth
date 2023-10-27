@@ -136,3 +136,16 @@ fn test_contract_nodes_panic_second_node() {
 
     graph.contract_nodes(1, 2);
 }
+
+#[test]
+fn test_newgraph_from_edges() {
+    let graph = Graph::from_edges(vec![(1, 2), (2, 3)]);
+
+    if let Some(set) = graph.adj_set.get(&1) {
+        assert_eq!(set, &HashSet::from([2]));
+    }
+
+    if let Some(set) = graph.adj_set.get(&2) {
+        assert_eq!(set, &HashSet::from([1, 3]));
+    }
+}
