@@ -29,6 +29,9 @@ impl Graph {
 
     /// Creates an `Graph` from a Vector of edges.
     ///
+    /// # Parameters
+    /// * edges: A vector of edges
+    /// 
     /// # Returns
     /// * New Graph with edges
     ///
@@ -56,6 +59,9 @@ impl Graph {
 
     /// Adds a new node without any edges to the graph
     ///
+    /// # Parameters
+    /// * node: The node to add to the graph
+    /// 
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -68,13 +74,17 @@ impl Graph {
 
     /// Adds a new edge between two nodes
     ///
-    /// # Panics
-    /// If one node does not exist
+    /// # Parameters
+    /// * node_a: the first node of the edge
+    /// * node_b: the second node of the edge
     ///
     /// # Returns
     /// * returns true if the edge was newly created
     /// * returns false if the edge already existed
-    ///
+    /// 
+    /// # Panics
+    /// If one node does not exist
+    /// 
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -99,12 +109,15 @@ impl Graph {
 
     /// Gets a reference to the HashSet of adjacent nodes
     ///
-    /// # Panics
-    /// * If the node does not exist
+    /// # Parameters
+    /// * node: The node wich neighbours should be returned
     ///
     /// # Returns
     /// * Reference to the HashSet of adjacent nodes
-    ///
+    /// 
+    /// # Panics
+    /// * If the node does not exist
+    /// 
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -125,6 +138,10 @@ impl Graph {
     /// The emerging node will be saved under node_a.
     /// node_b will be deleted.
     ///
+    /// # Parameters
+    /// * node_a: The frist node of the contraction
+    /// * node_b: The second node of the contraction
+    /// 
     /// # Panics
     /// If one node does not exist
     ///
