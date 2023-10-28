@@ -31,7 +31,7 @@ impl Graph {
     ///
     /// # Parameters
     /// * edges: A vector of edges
-    /// 
+    ///
     /// # Returns
     /// * New Graph with edges
     ///
@@ -61,7 +61,7 @@ impl Graph {
     ///
     /// # Parameters
     /// * node: The node to add to the graph
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -81,10 +81,10 @@ impl Graph {
     /// # Returns
     /// * returns true if the edge was newly created
     /// * returns false if the edge already existed
-    /// 
+    ///
     /// # Panics
     /// If one node does not exist
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -114,10 +114,10 @@ impl Graph {
     ///
     /// # Returns
     /// * Reference to the HashSet of adjacent nodes
-    /// 
+    ///
     /// # Panics
     /// * If the node does not exist
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
@@ -141,7 +141,7 @@ impl Graph {
     /// # Parameters
     /// * node_a: The frist node of the contraction
     /// * node_b: The second node of the contraction
-    /// 
+    ///
     /// # Panics
     /// If one node does not exist
     ///
@@ -179,6 +179,29 @@ impl Graph {
         self.adj_set.insert(node_a, union);
 
         self.adj_set.remove(&node_b);
+
+        for adj in self.adj_set.values_mut() {
+            adj.remove(&node_b);
+        }
+    }
+
+    /// Gets all existing nodes from the graph
+    ///
+    /// # Return
+    /// * Returns a vector containig all nodes
+    ///
+    /// # Examples
+    /// ```
+    /// use twinwidth::graph::Graph;
+    /// let mut graph: Graph = Graph::new();
+    ///
+    /// graph.add_node(1);
+    /// graph.add_node(2);
+    ///
+    /// let nodes = graph.get_all_nodes();
+    /// ```
+    pub fn get_all_nodes(&self) -> Vec<u32> {
+        self.adj_set.keys().cloned().collect()
     }
 }
 

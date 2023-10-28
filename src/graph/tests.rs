@@ -149,3 +149,15 @@ fn test_newgraph_from_edges() {
         assert_eq!(set, &HashSet::from([1, 3]));
     }
 }
+
+#[test]
+fn test_get_all_nodes() {
+    let mut graph = Graph::new();
+
+    graph.add_node(1);
+    graph.add_node(2);
+
+    let nodes = graph.get_all_nodes();
+
+    assert!(nodes.iter().all(|item| vec![1, 2].contains(item)));
+}
