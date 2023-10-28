@@ -36,6 +36,11 @@ impl Greedy {
         }
     }
 
+    /// Gets the max red degree
+    pub fn get_get_max_red_degree(&self) -> usize {
+        self.max_red_degree
+    }
+
     /// Performs the greedy algorithm
     ///
     /// # Returns
@@ -52,11 +57,11 @@ impl Greedy {
     pub fn solve(&mut self) -> Vec<(u32, u32)> {
         //TODO: Make this Option or find another smart way for initialisation issues
         let mut min_diff = 10000;
-        let mut contraction = (10000,10000);
+        let mut contraction = (10000, 10000);
 
         let nodes = self.graph.get_all_nodes();
 
-        //TODO: 1|2 is the same as 2|1, so for->for is dumb... 
+        //TODO: 1|2 is the same as 2|1, so for->for is dumb...
         for node_a in &nodes {
             for node_b in &nodes {
                 if node_a == node_b {
@@ -70,7 +75,7 @@ impl Greedy {
                     .symmetric_difference(neighbours_b)
                     .filter(|item| item != &node_a && item != &node_b)
                     .count();
-                
+
                 //TODO: Take already exisiting red edges into account
                 if diff < min_diff {
                     min_diff = diff;

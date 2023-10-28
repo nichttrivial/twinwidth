@@ -18,7 +18,10 @@ fn test_solve_two_nodes() {
 
     greedy.solve();
 
-    assert!(greedy.contraction_squence.iter().all(|item| vec![(1, 2),(2, 1)].contains(item)));
+    assert!(greedy
+        .contraction_squence
+        .iter()
+        .all(|item| vec![(1, 2), (2, 1)].contains(item)));
     assert_eq!(greedy.max_red_degree, 0);
 }
 
@@ -32,7 +35,13 @@ fn test_solve_x_nodes_cograph() {
 
     assert_eq!(greedy.contraction_squence.len(), 4);
     assert_eq!(greedy.graph.get_all_nodes().len(), 1);
-    assert_eq!(greedy.graph.get_neighbours(greedy.graph.get_all_nodes()[0]).len(), 0);
+    assert_eq!(
+        greedy
+            .graph
+            .get_neighbours(greedy.graph.get_all_nodes()[0])
+            .len(),
+        0
+    );
     assert_eq!(greedy.max_red_degree, 0);
 }
 
@@ -45,6 +54,12 @@ fn test_solve_x_nodes_no_cograph() {
 
     assert_eq!(greedy.contraction_squence.len(), 4);
     assert_eq!(greedy.graph.get_all_nodes().len(), 1);
-    assert_eq!(greedy.graph.get_neighbours(greedy.graph.get_all_nodes()[0]).len(), 0);
+    assert_eq!(
+        greedy
+            .graph
+            .get_neighbours(greedy.graph.get_all_nodes()[0])
+            .len(),
+        0
+    );
     assert_eq!(greedy.max_red_degree, 1);
 }
