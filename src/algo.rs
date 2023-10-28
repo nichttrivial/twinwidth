@@ -54,7 +54,7 @@ impl Greedy {
     /// let mut greedy = Greedy::new_with_graph(graph);
     /// let contraction_sequence = greedy.solve();
     /// ```
-    pub fn solve(&mut self) -> Vec<(u32, u32)> {
+    pub fn solve(&mut self) -> (Vec<(u32, u32)>, usize) {
         //TODO: Make this Option or find another smart way for initialisation issues
         let mut min_diff = 10000;
         let mut contraction = (10000, 10000);
@@ -95,7 +95,7 @@ impl Greedy {
             self.solve();
         }
 
-        self.contraction_squence.clone()
+        (self.contraction_squence.clone(), self.max_red_degree)
     }
 }
 
