@@ -57,6 +57,42 @@ impl Graph {
         g
     }
 
+    /// Reads graph from a string following the .gr format.
+    /// See [Pace IO Definition](https://pacechallenge.org/2023/io/) for more information.
+    ///
+    /// **The function assumes that your provided string is valid!**
+    ///
+    /// # Parameter
+    /// * gr: string slice containing the
+    ///
+    /// # Returns
+    /// * A new graph instance with respect to the gr-string.
+    ///
+    /// # Example
+    /// ```
+    /// use twinwidth::graph::Graph;
+    ///let gr = "1 2\n\
+    ///          2 3";
+    ///let graph = Graph::from_gr(gr);
+    /// ```
+    pub fn from_gr(gr: &str) -> Self {
+        //TODO: REFACTOR!
+        let mut edges: Vec<(u32, u32)> = Vec::new();
+
+        for line in gr.lines() {
+            let edge: (u32, u32);
+
+            let mut parts = line.split_whitespace().map(|s| s.parse::<u32>());
+            match (parts.next(), parts.next()) {
+                (Some(Ok(a)), Some(Ok(b))) => edge = (a, b),
+                _ => continue,
+            }
+
+            edges.push(edge);
+        }
+        Self::from_edges(edges)
+    }
+
     /// Adds a new node without any edges to the graph
     ///
     /// # Parameters
