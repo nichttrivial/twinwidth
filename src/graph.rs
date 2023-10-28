@@ -1,10 +1,11 @@
 //! This modules contains stuff for basic graph tasks
 use std::collections::{HashMap, HashSet};
 
-///A Graph implementation using adjacency HashSet
+/// A Graph implementation using adjacency HashSet
 ///
 /// The idea behind using a HashSet is to make the comparison of neighbourhoods easy
 /// with set operations.
+#[derive(PartialEq, Debug)]
 pub struct Graph {
     adj_set: HashMap<u32, HashSet<u32>>,
 }
