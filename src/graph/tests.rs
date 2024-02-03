@@ -144,6 +144,9 @@ fn test_contract_nodes() {
 
     let neighbours = graph.get_neighbours(2);
     assert_eq!(neighbours, &HashSet::from([1, 4]));
+
+    let neighbours = graph.get_neighbours(4);
+    assert_eq!(neighbours, &HashSet::from([2]));
 }
 
 #[test]

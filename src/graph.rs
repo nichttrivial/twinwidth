@@ -217,7 +217,11 @@ impl Graph {
         self.adj_set.remove(&node_b);
 
         for adj in self.adj_set.values_mut() {
-            adj.remove(&node_b);
+            //TODO: Do not remove, change to node a
+            if adj.contains(&node_b) {
+                adj.remove(&node_b);
+                adj.insert(node_a);
+            }
         }
     }
 
