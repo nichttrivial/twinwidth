@@ -22,7 +22,7 @@ fn test_solve_two_nodes() {
         .contraction_squence
         .iter()
         .all(|item| vec![(1, 2), (2, 1)].contains(item)));
-    assert_eq!(greedy.max_red_degree, 0);
+    assert_eq!(greedy.twin_width, 0);
 }
 
 #[test]
@@ -42,7 +42,7 @@ fn test_solve_x_nodes_cograph() {
             .len(),
         0
     );
-    assert_eq!(greedy.max_red_degree, 0);
+    assert_eq!(greedy.twin_width, 0);
 }
 
 #[test]
@@ -61,5 +61,5 @@ fn test_solve_x_nodes_no_cograph() {
             .len(),
         0
     );
-    assert_eq!(greedy.max_red_degree, 1);
+    assert_eq!(greedy.twin_width, 1);
 }

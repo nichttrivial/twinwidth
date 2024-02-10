@@ -5,7 +5,7 @@ use std::collections::{HashMap, HashSet};
 ///
 /// The idea behind using a HashSet is to make the comparison of neighbourhoods easy
 /// with set operations.
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Graph {
     adj_set: HashMap<u32, HashSet<u32>>,
 }
@@ -105,6 +105,9 @@ impl Graph {
     /// graph.add_node(1);
     /// ```
     pub fn add_node(&mut self, node: u32) {
+        if let Some(_) = self.adj_set.get(&node) {
+            return;
+        }
         self.adj_set.insert(node, HashSet::new());
     }
 
@@ -242,6 +245,16 @@ impl Graph {
     /// ```
     pub fn get_all_nodes(&self) -> Vec<u32> {
         self.adj_set.keys().cloned().collect()
+    }
+
+    /// Gets the max degree of the graph
+    /// TODO: Implement tests and complete documentation
+    pub fn get_max_degree(&self) -> usize {
+        if let Some(max_degree) = self.adj_set.iter().map(|(_, value)| value.len()).max() {
+            return max_degree;
+        }
+
+        0
     }
 }
 
