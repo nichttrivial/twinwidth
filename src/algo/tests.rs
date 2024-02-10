@@ -21,7 +21,7 @@ fn test_solve_two_nodes() {
     assert!(greedy
         .contraction_squence
         .iter()
-        .all(|item| vec![(1, 2), (2, 1)].contains(item)));
+        .all(|item| [(1, 2), (2, 1)].contains(item)));
     assert_eq!(greedy.twin_width, 0);
 }
 

@@ -178,5 +178,5 @@ fn test_get_all_nodes() {
 
     let nodes = graph.get_all_nodes();
 
-    assert!(nodes.iter().all(|item| vec![1, 2].contains(item)));
+    assert!(nodes.iter().all(|item| [1, 2].contains(item)));
 }

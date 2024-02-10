@@ -5,7 +5,7 @@ use std::collections::{HashMap, HashSet};
 ///
 /// The idea behind using a HashSet is to make the comparison of neighbourhoods easy
 /// with set operations.
-#[derive(PartialEq, Debug, Clone)]
+#[derive(PartialEq, Debug, Clone, Default)]
 pub struct Graph {
     adj_set: HashMap<u32, HashSet<u32>>,
 }
@@ -80,13 +80,13 @@ impl Graph {
         let mut edges: Vec<(u32, u32)> = Vec::new();
 
         for line in gr.lines() {
-            let edge: (u32, u32);
+            
 
             let mut parts = line.split_whitespace().map(|s| s.parse::<u32>());
-            match (parts.next(), parts.next()) {
-                (Some(Ok(a)), Some(Ok(b))) => edge = (a, b),
+            let edge: (u32, u32) = match (parts.next(), parts.next()) {
+                (Some(Ok(a)), Some(Ok(b))) => (a, b),
                 _ => continue,
-            }
+            };
 
             edges.push(edge);
         }
@@ -105,7 +105,7 @@ impl Graph {
     /// graph.add_node(1);
     /// ```
     pub fn add_node(&mut self, node: u32) {
-        if let Some(_) = self.adj_set.get(&node) {
+        if self.adj_set.get(&node).is_some() {
             return;
         }
         self.adj_set.insert(node, HashSet::new());
@@ -250,7 +250,7 @@ impl Graph {
     /// Gets the max degree of the graph
     /// TODO: Implement tests and complete documentation
     pub fn get_max_degree(&self) -> usize {
-        if let Some(max_degree) = self.adj_set.iter().map(|(_, value)| value.len()).max() {
+        if let Some(max_degree) = self.adj_set.values().map(|value| value.len()).max() {
             return max_degree;
         }
 
