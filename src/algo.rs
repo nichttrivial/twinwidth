@@ -1,4 +1,6 @@
 //! This module contains algorithms to solve the twinwidth problem
+use std::fmt::Write;
+
 use crate::graph::Graph;
 use itertools::Itertools;
 
@@ -39,7 +41,7 @@ impl Greedy {
     }
 
     /// Gets the max red degree
-    pub fn get_get_max_red_degree(&self) -> usize {
+    pub fn get_max_red_degree(&self) -> usize {
         self.twin_width
     }
 
@@ -117,6 +119,19 @@ impl Greedy {
         }
 
         (self.contraction_squence.clone(), self.twin_width)
+    }
+
+    /// Constructs an string with resepect to the .tww format defined by the pace challenge
+    /// See [Pace IO Definition](https://pacechallenge.org/2023/io/) for more information.
+    ///
+    /// # Returns
+    /// A new string with respect to the tww format
+    pub fn output_tww_str(&self) -> String {
+        let mut tww = String::new();
+        for (node_a, node_b) in &self.contraction_squence {
+            writeln!(&mut tww, "{} {}", node_a, node_b).unwrap();
+        }
+        tww
     }
 
     fn get_all_combinations(nodes: Vec<u32>) -> Vec<(u32, u32)> {

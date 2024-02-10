@@ -80,8 +80,6 @@ impl Graph {
         let mut edges: Vec<(u32, u32)> = Vec::new();
 
         for line in gr.lines() {
-            
-
             let mut parts = line.split_whitespace().map(|s| s.parse::<u32>());
             let edge: (u32, u32) = match (parts.next(), parts.next()) {
                 (Some(Ok(a)), Some(Ok(b))) => (a, b),
