@@ -1,5 +1,5 @@
 //! This module contains algorithms to solve the twinwidth problem
-use std::fmt::Write;
+use std::{cmp, fmt::Write};
 
 use crate::graph::Graph;
 use itertools::Itertools;
@@ -68,52 +68,52 @@ impl Greedy {
             let mut all_nodes = self.graph.get_all_nodes();
             //The use of Hashmap/Hashset implementation has no order, which indeed has effects on the result.
             all_nodes.sort();
-            for (node_a, node_b) in Self::get_all_combinations(all_nodes) {
-                //prepare Graph for local red edges
-                let mut local_red_edges = self.global_red_edges.clone();
-                local_red_edges.add_node(node_a);
-                local_red_edges.add_node(node_b);
+            Self::get_all_combinations(all_nodes)
+                .into_iter()
+                .for_each(|(node_a, node_b)| {
+                    //prepare Graph for local red edges
+                    let mut local_red_edges = self.global_red_edges.clone();
+                    local_red_edges.add_node(node_a);
+                    local_red_edges.add_node(node_b);
 
-                //get the neighbourhoods of the two edges and evalute the difference
-                let neighbours_a = self.graph.get_neighbours(node_a);
-                let neighbours_b = self.graph.get_neighbours(node_b);
-                let diff = neighbours_a
-                    .symmetric_difference(neighbours_b)
-                    .filter(|item| item != &&node_a && item != &&node_b);
+                    //get the neighbourhoods of the two edges and evalute the difference
+                    let neighbours_a = self.graph.get_neighbours(node_a);
+                    let neighbours_b = self.graph.get_neighbours(node_b);
+                    let diff = neighbours_a
+                        .symmetric_difference(neighbours_b)
+                        .filter(|item| item != &&node_a && item != &&node_b);
 
-                //The difference would create new red edges. Add them to the local red edges
-                for node in neighbours_a
-                    .iter()
-                    .filter(|x| diff.clone().any(|y| x == &y))
-                {
-                    local_red_edges.add_node(*node);
-                    local_red_edges.add_edge(node_a, *node);
-                }
-                for node in neighbours_b
-                    .iter()
-                    .filter(|x| diff.clone().any(|y| x == &y))
-                {
-                    local_red_edges.add_node(*node);
-                    local_red_edges.add_edge(node_b, *node);
-                }
+                    //The difference would create new red edges. Add them to the local red edges
+                    neighbours_a
+                        .iter()
+                        .filter(|x| diff.clone().any(|y| x == &y))
+                        .for_each(|node| {
+                            local_red_edges.add_node(*node);
+                            local_red_edges.add_edge(node_a, *node);
+                        });
+                    neighbours_b
+                        .iter()
+                        .filter(|x| diff.clone().any(|y| x == &y))
+                        .for_each(|node| {
+                            local_red_edges.add_node(*node);
+                            local_red_edges.add_edge(node_b, *node);
+                        });
 
-                //Contract the nodes on the local red edges
-                local_red_edges.contract_nodes(node_a, node_b);
+                    //Contract the nodes on the local red edges
+                    local_red_edges.contract_nodes(node_a, node_b);
 
-                //Evalute the max degree of the local red edges and save preliminary result
-                if local_red_degree > local_red_edges.get_max_degree() {
-                    local_red_degree = local_red_edges.get_max_degree();
-                    contraction = (node_a, node_b);
-                    red_edges = local_red_edges;
-                }
-            }
+                    //Evalute the max degree of the local red edges and save preliminary result
+                    if local_red_degree > local_red_edges.get_max_degree() {
+                        local_red_degree = local_red_edges.get_max_degree();
+                        contraction = (node_a, node_b);
+                        red_edges = local_red_edges;
+                    }
+                });
 
             //Update Algo internals after each iteration
             self.global_red_edges = red_edges;
             //println!("{}", local_red_degree);
-            if self.twin_width < local_red_degree {
-                self.twin_width = local_red_degree;
-            }
+            self.twin_width = cmp::max(self.twin_width, local_red_degree);
             self.contraction_squence.push(contraction);
             self.graph.contract_nodes(contraction.0, contraction.1);
         }
@@ -128,9 +128,11 @@ impl Greedy {
     /// A new string with respect to the tww format
     pub fn output_tww_str(&self) -> String {
         let mut tww = String::new();
-        for (node_a, node_b) in &self.contraction_squence {
-            writeln!(&mut tww, "{} {}", node_a, node_b).unwrap();
-        }
+        self.contraction_squence
+            .iter()
+            .for_each(|(node_a, node_b)| {
+                writeln!(&mut tww, "{} {}", node_a, node_b).unwrap();
+            });
         tww
     }
 
