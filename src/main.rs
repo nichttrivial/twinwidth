@@ -1,6 +1,6 @@
 use std::fs;
 use std::path::PathBuf;
-use twinwidth::algo::Greedy;
+use twinwidth::algo::{Algo, Greedy};
 use twinwidth::graph::Graph;
 
 //use twinwidth::{algo::Greedy, graph::Graph};

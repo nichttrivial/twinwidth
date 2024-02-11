@@ -1,4 +1,4 @@
-use crate::graph::Graph;
+use crate::{algo::Algo, graph::Graph};
 
 use super::Greedy;
 

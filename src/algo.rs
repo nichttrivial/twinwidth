@@ -4,6 +4,16 @@ use std::{cmp, fmt::Write};
 use crate::graph::Graph;
 use itertools::Itertools;
 
+pub trait Algo {
+    fn new_with_graph(graph: Graph) -> Self;
+
+    fn get_max_red_degree(&self) -> usize;
+
+    fn solve(&mut self) -> (Vec<(u32, u32)>, usize);
+
+    fn output_tww_str(&self) -> String;
+}
+
 /// Holds a graph and its contraction squence.
 /// In the beginning the contraction sequence is empty.
 /// Each contraction on the graph will be stored in the contraction sequence in the occuring order.
@@ -15,7 +25,7 @@ pub struct Greedy {
     twin_width: usize,
 }
 
-impl Greedy {
+impl Algo for Greedy {
     /// Creates a new `Greedy` instance
     ///
     /// # Parameters
@@ -27,11 +37,11 @@ impl Greedy {
     /// # Examples
     /// ```
     /// use twinwidth::graph::Graph;
-    /// use twinwidth::algo::Greedy;
+    /// use twinwidth::algo::{Algo, Greedy};
     /// let graph = Graph::from_edges(vec![(1, 2), (2, 3)]);
     /// let greedy = Greedy::new_with_graph(graph);
     /// ```
-    pub fn new_with_graph(graph: Graph) -> Self {
+    fn new_with_graph(graph: Graph) -> Self {
         Greedy {
             graph,
             global_red_edges: Graph::new(),
@@ -41,7 +51,7 @@ impl Greedy {
     }
 
     /// Gets the max red degree
-    pub fn get_max_red_degree(&self) -> usize {
+    fn get_max_red_degree(&self) -> usize {
         self.twin_width
     }
 
@@ -53,12 +63,12 @@ impl Greedy {
     /// # Example
     /// ```
     /// use twinwidth::graph::Graph;
-    /// use twinwidth::algo::Greedy;
+    /// use twinwidth::algo::{Algo, Greedy};
     /// let graph = Graph::from_edges(vec![(1, 2), (2, 3)]);
     /// let mut greedy = Greedy::new_with_graph(graph);
     /// let contraction_sequence = greedy.solve();
     /// ```
-    pub fn solve(&mut self) -> (Vec<(u32, u32)>, usize) {
+    fn solve(&mut self) -> (Vec<(u32, u32)>, usize) {
         while self.graph.get_all_nodes().len() > 1 {
             //TODO: Make this Option or smart in another way. This will collapse with big graphes!
             let mut local_red_degree: usize = 100000;
@@ -68,7 +78,7 @@ impl Greedy {
             let mut all_nodes = self.graph.get_all_nodes();
             //The use of Hashmap/Hashset implementation has no order, which indeed has effects on the result.
             all_nodes.sort();
-            Self::get_all_combinations(all_nodes)
+            get_all_combinations(all_nodes)
                 .into_iter()
                 .for_each(|(node_a, node_b)| {
                     //prepare Graph for local red edges
@@ -112,7 +122,6 @@ impl Greedy {
 
             //Update Algo internals after each iteration
             self.global_red_edges = red_edges;
-            //println!("{}", local_red_degree);
             self.twin_width = cmp::max(self.twin_width, local_red_degree);
             self.contraction_squence.push(contraction);
             self.graph.contract_nodes(contraction.0, contraction.1);
@@ -126,7 +135,7 @@ impl Greedy {
     ///
     /// # Returns
     /// A new string with respect to the tww format
-    pub fn output_tww_str(&self) -> String {
+    fn output_tww_str(&self) -> String {
         let mut tww = String::new();
         self.contraction_squence
             .iter()
@@ -135,15 +144,15 @@ impl Greedy {
             });
         tww
     }
+}
 
-    fn get_all_combinations(nodes: Vec<u32>) -> Vec<(u32, u32)> {
-        let result: Vec<_> = nodes
-            .iter()
-            .combinations(2)
-            .map(|mut x| (*x.pop().unwrap(), *x.pop().unwrap()))
-            .collect();
-        result
-    }
+fn get_all_combinations(nodes: Vec<u32>) -> Vec<(u32, u32)> {
+    let result: Vec<_> = nodes
+        .iter()
+        .combinations(2)
+        .map(|mut x| (*x.pop().unwrap(), *x.pop().unwrap()))
+        .collect();
+    result
 }
 
 #[cfg(test)]

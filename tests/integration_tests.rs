@@ -1,6 +1,9 @@
 use std::{collections::HashMap, fs, path::PathBuf, process::Command};
 
-use twinwidth::{algo::Greedy, graph::Graph};
+use twinwidth::{
+    algo::{Algo, Greedy},
+    graph::Graph,
+};
 
 #[test]
 pub fn test_tiny_set() {
