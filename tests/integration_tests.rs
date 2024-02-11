@@ -5,6 +5,7 @@ use twinwidth::{
     graph::Graph,
 };
 
+//TODO: Refactor this or create a second test. One can unse Analyzer now.
 #[test]
 pub fn test_tiny_set() {
     let solutions: HashMap<&str, usize> = HashMap::from([
