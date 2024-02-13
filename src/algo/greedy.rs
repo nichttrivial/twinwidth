@@ -1,8 +1,4 @@
-use std::cmp;
-use std::collections::HashSet;
-use std::fmt::Write;
-
-use itertools::Itertools;
+use std::{cmp, collections::HashSet, fmt::Write};
 
 use crate::algo::{get_all_combinations, Algo};
 use crate::graph::Graph;
@@ -71,9 +67,7 @@ impl Algo for Greedy {
             let mut all_nodes = self.graph.get_all_nodes();
             //The use of Hashmap/Hashset implementation has no order, which indeed has effects on the result.
             all_nodes.sort();
-            let combinations = get_all_combinations(all_nodes.clone()).try_len().unwrap();
-            println!("{}", combinations);
-            let mut debug_cnt: usize = 0;
+
             for (node_a, node_b) in get_all_combinations(all_nodes) {
                 //prepare Graph for local red edges
                 let mut local_red_edges = self.global_red_edges.clone();
@@ -132,11 +126,6 @@ impl Algo for Greedy {
                         //We take the first best solution. And with 0 there cannot be some better
                         break;
                     }
-                }
-                debug_cnt += 1;
-                if debug_cnt % 1000 == 0 {
-                    println!("Progress: {}", debug_cnt as f32 / combinations as f32);
-                    println!("{debug_cnt}");
                 }
             }
 
