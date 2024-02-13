@@ -1,5 +1,5 @@
 use std::path::PathBuf;
-use twinwidth::algo::Greedy;
+use twinwidth::algo::greedy::Greedy;
 use twinwidth::analyzer::Analyzer;
 
 //use twinwidth::{algo::Greedy, graph::Graph};

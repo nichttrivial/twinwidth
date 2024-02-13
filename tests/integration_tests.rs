@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs, path::PathBuf, process::Command};
 
 use twinwidth::{
-    algo::{Algo, Greedy},
+    algo::{greedy::Greedy, Algo},
     graph::Graph,
 };
 
